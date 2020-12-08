@@ -37,3 +37,30 @@ const routes: Routes = [];
 })
 export class AppRoutingModule { }
 ```
+
+## Schritt 2: Routen erstellen
+
+Als nächstes müssen wir in unserem `routes`-Array unsere Routen definieren. 
+Ein Routen-Objekt sieht wie folgt aus:
+```
+{
+  path: '<path-name>',
+  component: <KomponentenKlassenName>
+}
+```
+Die Route wird dann über `http://my-domain.com/<path-name>` im Browser aufgerufen und die entsprechende Komponente wird geladen.
+
+In dem `routes`-Array erstellen wir für den Anfang folgende Routen:
+```
+const routes: Routes = [
+  {
+    path: '', // 
+    component: HomeComponent,
+  },
+  {
+    path: 'login',
+    component: LoginComponent
+  }
+];
+```
+
