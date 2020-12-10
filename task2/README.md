@@ -124,4 +124,25 @@ const blogRoutes: Routes = [
 })
 export class BlogRoutingModule { }
 ```
+Mit `children` können wir Unter-Routen definieren. Der Aufbau ist der selbe.
 
+
+Als nächsten wollen wir unser `BlogModule` per `LazyLoading` laden. Dazu müssen wir in unserem `AppRoutingModule` eine `LazyLoading`-Route definieren:
+```
+const routes: Routes = [
+  // andere Routen
+  {
+    path: 'blog',
+    loadChildren: () => import('./blog/blog.module').then(m => m.BlogModule)
+  },
+  {
+    path: '**',
+    redirectTo: ''
+  }
+];
+```
+Mit `loadChildren` laden wir einfach unseren `BlogModule`, in welchem der `BlogRoutingModule` importiert ist. Beim `build`-Prozess wird dieser Module zu einer separaten JS-Datei gebaut und per klick auf die `/blog`-Route geladen.
+
+So haben wir unsere Web-App etwas performanter gemacht.
+
+**AUFGABE:** Denn `/admin`-Bereich wollen wir auch als `FeatureModule` per `LazyLoading` laden.
