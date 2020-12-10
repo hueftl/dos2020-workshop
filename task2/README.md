@@ -54,7 +54,7 @@ In dem `routes`-Array erstellen wir für den Anfang folgende Routen:
 ```
 const routes: Routes = [
   {
-    path: '', // 
+    path: '', // Leerer Pfad -> Beim Aufruf von http://my-domain.com wird z.B. die HomeComponent geladen
     component: HomeComponent,
   },
   {
@@ -63,4 +63,28 @@ const routes: Routes = [
   }
 ];
 ```
+
+Damit unsere App bei dem aufgerufenen Pfad die richtige Komponent darstellt, müssen wir in der root-Ebene eine Platzhalter-Komponente `<router-outlet></router-outlet>`, die mit `RoutingModule` bereitgestellt wird, aufrufen. D.h. dass wir in unserer `app.component.html` diesen `<router-outlet></router-outlet>` platzieren.
+
+**WICHTIG:** Wenn die Route auch Kind-Routen haben, dann muss die oberste Ebene in dem HTML-Komponent-File den `<router-outlet></router-outlet>` haben. Sonst wird das Routing nicht funktionieren.
+
+Wenn wir uns in der URL vertippen und die App die Route nicht finden kann, dann bekommen wir eine "404 Page not found"-Seite. Das ist nicht so wirklich nutzerfreundlich. Für diesen Fall können wir eine Wildcard-Route in unserem `routes`-Array definieren:
+```
+const routes: Routes = [
+  {
+    path: '',
+    component: HomeComponent,
+  },
+  {
+    path: 'login',
+    component: LoginComponent
+  },
+  // hier stehen andere Routen
+  {
+    path: '**',
+    redirectTo: '' // Hier geben wir an, auf welchen Pfad ein Redirect stattfinden soll
+  }
+];
+```
+**WICHTIG:** Die Wildcard-Route soll immer am Ende des Arrays stehen.
 
