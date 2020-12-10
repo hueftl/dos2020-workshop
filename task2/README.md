@@ -88,3 +88,40 @@ const routes: Routes = [
 ```
 **WICHTIG:** Die Wildcard-Route soll immer am Ende des Arrays stehen.
 
+Wenn unsere App wächst und wir immer mehr Routen bekommen werden, dann macht es Sinn einige Bereiche der App nur dann laden, wenn diese tatsächlich über eine bestommte Route aufgerufen werden. Diesen Mechanismus in Angular nennt man `LazyLoading`. D.h. dass wir einen bestimmten Bereich unserer App in ein extra Module (`FetureModule`) auslagern. Dieser `FeatureModule` bekommnt dann eigenes Routing. Somit können wir unsere bisschen aufsplitten und die initiale Ladezeit verkürzen.
+
+Um das besser zu verstehen, machen wir den `blog`-Bereich (Feature) unserer App zu einem `BlogModule` mit eigenem `BlogRoutingModule`.
+
+In der `/blog/blog-routing.module.ts` erstellen wir unsere `blogRoutes`, die wir an den `RouterModule` als `forChild` (Kind)-Routen übergeben.
+Das sieht wie folgt aus:
+```
+import { NgModule } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
+import { BlogComponent } from './blog.component';
+import { BlogListComponent } from './blog-list/blog-list.component';
+import { BlogSingleComponent } from './blog-single/blog-single.component';
+
+const blogRoutes: Routes = [
+  {
+    path: '',
+    component: BlogComponent,
+    children: [
+      {
+        path: '',
+        component: BlogListComponent
+      },
+      {
+        path: ':id', // <-- Routen-Parameter, den wir auslesen können. Syntax -> :<parameter-name> z.B. :id -> blog/123
+        component: BlogSingleComponent
+      }
+    ]
+  }
+];
+
+@NgModule({
+  imports: [RouterModule.forChild(blogRoutes)],
+  exports: [RouterModule]
+})
+export class BlogRoutingModule { }
+```
+
